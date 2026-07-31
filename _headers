@@ -10,6 +10,7 @@
   X-Robots-Tag: index, follow
   Cache-Control: public, max-age=0, must-revalidate
   Link: </.well-known/api-catalog>; rel="api-catalog", </.well-known/agent-skills/index.json>; rel="describedby", </llms.txt>; rel="describedby", </.well-known/mcp/server-card.json>; rel="service-desc", </auth.md>; rel="auth", </.well-known/openid-configuration>; rel="openid-configuration"
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://embed.tawk.to; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.tawk.to; font-src 'self'; connect-src 'self' https://api.web3forms.com https://my-n8n-server-d8fz.onrender.com https://*.tawk.to wss://*.tawk.to; frame-src https://*.tawk.to; base-uri 'self'; form-action 'self' https://api.web3forms.com; frame-ancestors 'self'
 
 # ── Static assets ────────────────────────────────────────────────────────────
 /css/*
@@ -22,6 +23,9 @@
   Cache-Control: public, max-age=31536000, immutable
 
 /sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/sitemap-*.xml
   Cache-Control: public, max-age=3600
 
 /robots.txt
