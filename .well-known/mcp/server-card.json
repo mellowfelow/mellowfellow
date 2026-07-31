@@ -11,8 +11,8 @@
     }
   },
   "transport": {
-    "type": "http",
-    "endpoint": "https://mellowfellowcarts.com"
+    "type": "none",
+    "note": "Static site — no live MCP endpoint is hosted. Resources below are plain HTML pages, not JSON-RPC tools. Ordering is human-assisted only (WhatsApp/email)."
   },
   "capabilities": {
     "resources": [

@@ -9,6 +9,8 @@ Allow: /
 # crawl them, read the noindex, and drop them cleanly (a disallowed page
 # can never be crawled to see its noindex, which causes GSC conflicts).
 
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
 # AI crawlers — welcome to index product & content pages
 User-agent: GPTBot
 Allow: /
@@ -45,10 +47,6 @@ Allow: /
 
 User-agent: cohere-ai
 Allow: /
-
-# Content signals for AI agents
-# X-Robots-Tag: index, follow
-# Content-Type: text/html; charset=utf-8
 
 # Agent-readable resources
 # llms.txt: https://mellowfellowcarts.com/llms.txt
