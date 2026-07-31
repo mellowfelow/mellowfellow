@@ -474,18 +474,24 @@
         if (w3Controller) w3Controller.abort();
       }, 15000);
 
+      /* FormData (not JSON) is a CORS "simple request" — the browser never
+         sends a preflight OPTIONS for it, so a flaky/missing CORS response
+         from Web3Forms on the preflight (confirmed live: "No
+         'Access-Control-Allow-Origin' header on the preflight response")
+         can't block it. This is Web3Forms' own documented method. */
+      var w3Body = new FormData();
+      w3Body.append('access_key', W3KEY);
+      w3Body.append('subject', 'NEW ORDER ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')');
+      w3Body.append('from_name', 'Mellow Fellow Orders');
+      w3Body.append('email', 'info@mellowfellowcarts.com');
+      w3Body.append('replyto', email);
+      w3Body.append('message', orderBody);
+
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        headers: { 'Accept': 'application/json' },
         signal: w3Controller ? w3Controller.signal : undefined,
-        body: JSON.stringify({
-          access_key: W3KEY,
-          subject: 'NEW ORDER ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')',
-          from_name: 'Mellow Fellow Orders',
-          email: 'info@mellowfellowcarts.com',
-          replyto: email,
-          message: orderBody
-        })
+        body: w3Body
       }).then(function (res) { return res.json(); }).then(function (data) {
         clearTimeout(w3Timeout);
         if (data && data.success) {
@@ -537,10 +543,14 @@
     var W3 = '1f43d851-ec13-4aca-8d41-1e4f8fd9ed9b';
     function send(payload, btn, label) {
       if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
+      /* FormData avoids the CORS preflight that JSON+Content-Type triggers \u2014
+         see the matching fix + explanation on the checkout submit handler. */
+      var fd = new FormData();
+      for (var k in payload) { if (payload.hasOwnProperty(k)) fd.append(k, payload[k]); }
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { 'Accept': 'application/json' },
+        body: fd
       }).then(function (r) { return r.json(); }).then(function (d) {
         if (btn) { btn.disabled = false; btn.textContent = label; }
         toast(d.success ? 'Message sent! We will reply within 1-2 hours.'
