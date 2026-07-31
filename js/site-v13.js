@@ -446,7 +446,10 @@
             orderNumber: orderNum,
             amount: '$' + t.total.toFixed(2),
             customerName: customer,
-            paymentMethod: payment
+            paymentMethod: payment,
+            email: email,
+            phone: val('coPhone'),
+            address: addr
           })
         }).catch(function () {});
       } catch (e) {}
@@ -462,9 +465,20 @@
 
       if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Placing Order…'; }
 
+      /* Never let this hang forever (e.g. a silently-blocked request from an
+         ad-blocker extension) — bound it so the customer always gets feedback
+         instead of being stuck on a disabled button indefinitely. */
+      var w3Controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      var w3TimedOut = false;
+      var w3Timeout = setTimeout(function () {
+        w3TimedOut = true;
+        if (w3Controller) w3Controller.abort();
+      }, 15000);
+
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        signal: w3Controller ? w3Controller.signal : undefined,
         body: JSON.stringify({
           access_key: W3KEY,
           subject: 'NEW ORDER ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')',
@@ -474,6 +488,7 @@
           message: orderBody
         })
       }).then(function (res) { return res.json(); }).then(function (data) {
+        clearTimeout(w3Timeout);
         if (data && data.success) {
           /* clear cart, go to thank-you page */
           try { localStorage.removeItem('mf_cart'); } catch (e) {}
@@ -484,9 +499,13 @@
             'WhatsApp to complete it, or try again.');
         }
       }).catch(function () {
+        clearTimeout(w3Timeout);
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order →'; }
-        fail('Network error placing your order. Please check your connection and try again, ' +
-          'or order via WhatsApp.');
+        fail((w3TimedOut
+          ? 'This is taking longer than expected (possibly blocked by a browser extension). '
+          : 'Network error placing your order. ') +
+          'Please try again, or message us on WhatsApp to complete your order — ' +
+          'your order number is ' + orderNum + '.');
       });
     });
   }
