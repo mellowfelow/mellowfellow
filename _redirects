@@ -2,6 +2,10 @@
 # Every page is now a real static HTML file (folder/index.html),
 # so there is NO catch-all SPA rewrite. Pages serves each URL directly.
 
+# www -> apex (defensive: www has no DNS record today, but this makes the
+# canonical host correct the instant www is ever pointed at this project)
+https://www.mellowfellowcarts.com/*  https://mellowfellowcarts.com/:splat  301!
+
 # Legacy SPA paths -> real pages (301 permanent)
 /wa-checkout   /checkout   301
 /index.html    /           301
