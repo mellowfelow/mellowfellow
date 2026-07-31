@@ -445,11 +445,10 @@
             domain: 'mellowfellowcarts.com',
             orderNumber: orderNum,
             amount: '$' + t.total.toFixed(2),
-            customerName: customer,
-            paymentMethod: payment,
-            email: email,
-            phone: val('coPhone'),
-            address: addr
+            recipientName: customer,
+            phoneNumber: val('coPhone') || 'N/A',
+            deliveryAddress: addr,
+            paymentMethod: payment
           })
         }).catch(function () {});
       } catch (e) {}
