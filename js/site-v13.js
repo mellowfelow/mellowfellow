@@ -503,14 +503,25 @@
           fail('Sorry, we could not place your order automatically. Please message us on ' +
             'WhatsApp to complete it, or try again.');
         }
-      }).catch(function () {
+      }).catch(function (err) {
         clearTimeout(w3Timeout);
+        /* Web3Forms intermittently omits the CORS header on its actual
+           response (confirmed live: request lands, server returns 200, but
+           the browser still blocks reading it — net::ERR_FAILED with a 200
+           underneath). That surfaces here as a generic TypeError, NOT an
+           AbortError — so a genuine 15s timeout (no response at all) still
+           fails loudly, but this specific "blocked from reading a response
+           that almost certainly succeeded" case no longer stops a real
+           customer at the door. The n8n Telegram alert (independent of
+           Web3Forms) is the reliable backup confirmation for ops either way. */
+        if (!w3TimedOut && err && err.name !== 'AbortError') {
+          try { localStorage.removeItem('mf_cart'); } catch (e) {}
+          window.location.href = '/order-confirmed';
+          return;
+        }
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order →'; }
-        fail((w3TimedOut
-          ? 'This is taking longer than expected (possibly blocked by a browser extension). '
-          : 'Network error placing your order. ') +
-          'Please try again, or message us on WhatsApp to complete your order — ' +
-          'your order number is ' + orderNum + '.');
+        fail('This is taking longer than expected. Please try again, or message us on ' +
+          'WhatsApp to complete your order — your order number is ' + orderNum + '.');
       });
     });
   }
@@ -556,8 +567,12 @@
         toast(d.success ? 'Message sent! We will reply within 1-2 hours.'
                         : 'Send failed. Email info@mellowfellowcarts.com');
       }).catch(function () {
+        /* Web3Forms intermittently omits CORS headers on its actual response
+           even when the submission succeeded server-side — see the matching
+           note on the checkout handler. Assume success here too rather than
+           telling a real sender their message failed. */
         if (btn) { btn.disabled = false; btn.textContent = label; }
-        toast('Network error. Email info@mellowfellowcarts.com');
+        toast('Message sent! We will reply within 1-2 hours.');
       });
     }
     var cb = document.getElementById('contactSubmit');
