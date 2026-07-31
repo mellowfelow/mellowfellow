@@ -1,0 +1,59 @@
+# Mellow Fellow — mellowfellowcarts.com
+# Updated: July 2026
+
+User-agent: *
+Allow: /
+# Note: /cart, /checkout and /order-confirmed are handled with a
+# <meta name="robots" content="noindex, follow"> tag on the pages
+# themselves. They are intentionally NOT disallowed here so Google can
+# crawl them, read the noindex, and drop them cleanly (a disallowed page
+# can never be crawled to see its noindex, which causes GSC conflicts).
+
+# AI crawlers — welcome to index product & content pages
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Content signals for AI agents
+# X-Robots-Tag: index, follow
+# Content-Type: text/html; charset=utf-8
+
+# Agent-readable resources
+# llms.txt: https://mellowfellowcarts.com/llms.txt
+# API Catalog: https://mellowfellowcarts.com/.well-known/api-catalog
+# Agent Skills: https://mellowfellowcarts.com/.well-known/agent-skills/index.json
+# MCP Server Card: https://mellowfellowcarts.com/.well-known/mcp/server-card.json
+
+Sitemap: https://mellowfellowcarts.com/sitemap.xml

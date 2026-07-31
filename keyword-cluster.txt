@@ -1,0 +1,152 @@
+# MELLOW FELLOW — KEYWORD CLUSTER ROADMAP
+# Generated: June 29, 2026
+# Site: mellowfellowcarts.com
+# All clusters below are UNUSED — existing posts already cover keywords not listed here.
+
+=============================================================
+PUBLISHED CLUSTERS (DO NOT REPEAT)
+=============================================================
+✓ mellow fellow live resin / live resin review / live resin how to use / live resin vs distillate
+✓ mellow fellow gummies / gummies review / gummies near me
+✓ is mellow fellow safe / mellow fellow lab testing / COA
+✓ mellow fellow destination series / destination series flavor guide / destination series instructions
+✓ mellow fellow coupon code / discount code / promo
+✓ mellow fellow thcp / what is thcp
+✓ thca flower / mellow fellow thca / thca flower legal / thca vs thc
+✓ mellow fellow vape / vape cart vs disposable
+✓ delta 8 vs delta 9 vs thcp
+✓ what is thch / mellow fellow thch
+✓ best thca disposable vapes 2026
+✓ best mellow fellow products for beginners
+✓ how to store thca flower and vape carts
+✓ mellow fellow vs other brands
+✓ how to order mellow fellow online
+✓ terp sauce vapes explained
+✓ does mellow fellow get you high [NEW — Jun 29]
+✓ mellow fellow disposable not working / blinking blue / button instructions [NEW — Jun 29]
+✓ does mellow fellow show on drug test [NEW — Jun 29]
+✓ mellow fellow edibles ranked [NEW — Jun 29]
+✓ mellow fellow strains / indica / sativa / blue dream / green crack [NEW — Jun 29]
+✓ mellow fellow 2g / 4ml / 4g / size guide [NEW — Jun 29]
+✓ mellow fellow spinner / fidget spinner / destination series blends [NEW — Jun 29]
+
+=============================================================
+CLUSTER 1 — LOCAL SEO (New page needed: Store Locator / Near Me)
+=============================================================
+Intent: Transactional / Navigational
+Recommended Content: "Where to Buy Mellow Fellow Near Me — Store Locator & Online Options"
+Recommended URL: /blog/mellow-fellow-near-me
+Priority: HIGH (480 + 50 + 40 vol combined)
+
+Primary:   mellow fellow near me (480 vol, KD 21)
+Secondary: mellow fellow live resin near me (50 vol, KD 18)
+           mellow fellow carts near me (40 vol, KD 24)
+           mellow fellow gummies near me (50 vol, KD 26)
+           mellow fellow store locator (70 vol, KD 26)
+Supporting: mellow fellow reno (260 vol), mellow fellow spring hill (70 vol),
+            mellow fellow princeton (50 vol), mellow fellow spring hill ks (50 vol),
+            mellow fellow milaca (70 vol)
+
+=============================================================
+CLUSTER 2 — BRAND REPUTATION / SOCIAL PROOF
+=============================================================
+Intent: Commercial / Informational
+Recommended Content: "Mellow Fellow Reviews 2026 — What Real Customers Are Saying"
+Recommended URL: /blog/mellow-fellow-reviews-2026
+Priority: HIGH (390 vol primary)
+
+Primary:   mellow fellow reviews (390 vol, KD 18)
+Secondary: mellow fellow review (70 vol, KD 3)
+           mellow fellow reddit (390 vol, KD 22)
+           mellow fellow live resin review reddit (40 vol, KD 28)
+           mellow fellow carts reddit (70 vol, KD 29)
+           mellow fellow thcp reddit (70 vol, KD 27)
+Supporting: is mellow fellow a good brand (110 vol, KD 2)
+            mellow fellow cart review (40 vol, KD 8)
+
+=============================================================
+CLUSTER 3 — DREAM BLEND DEEP DIVE
+=============================================================
+Intent: Commercial / Informational
+Recommended Content: "Mellow Fellow Dream Blend Review: Effects, Strains & Who It's For"
+Recommended URL: /blog/mellow-fellow-dream-blend-review
+Priority: MEDIUM (70 + 40 vol)
+
+Primary:   mellow fellow dream blend (70 vol, KD 8)
+Secondary: mellow fellow dream blend review (40 vol, KD 7)
+           mellow fellow dream (70 vol, KD 9)
+           mellow fellow euphoria blend review (40 vol, KD 6)
+           mellow fellow euphoria (110 vol, KD 9)
+Supporting: mellow fellow introvert (40 vol), mellow fellow tranquility (50 vol),
+            mellow fellow creativity blend (50 vol), mellow fellow desire (50 vol)
+
+=============================================================
+CLUSTER 4 — THCA STRAIN REVIEWS (Product-level SEO)
+=============================================================
+Intent: Commercial / Informational
+Recommended Content: "Mellow Fellow THCa Strains Reviewed: Sour Haze, Blue Waffles, Gas Mask & More"
+Recommended URL: /blog/mellow-fellow-thca-strains-reviewed
+Priority: MEDIUM
+
+Primary:   mellow fellow thca (140 vol, KD 11)
+Secondary: mellow fellow strain (480 vol, KD 10)
+           mellow fellow green crack (110 vol, KD 9)
+           mellow fellow blue dream (90 vol, KD 9)
+           mellow fellow strawberry cough (70 vol, KD 6)
+           mellow fellow pineapple express thcp (40 vol, KD 7)
+Supporting: grassroots mellow fellow (40 vol), mellow fellow b 007 / b 009 / b 012 (model numbers)
+
+=============================================================
+CLUSTER 5 — DELTA-8 PRODUCT FOCUS
+=============================================================
+Intent: Commercial / Navigational
+Recommended Content: "Mellow Fellow Delta-8 Products — What's in the Lineup and Is It Still Worth It?"
+Recommended URL: /blog/mellow-fellow-delta-8-guide
+Priority: MEDIUM (70 vol primary)
+
+Primary:   mellow fellow delta 8 (70 vol, KD 21)
+Secondary: mellow fellow delta 9 gummies review (50 vol, KD 5)
+           delta 8 vs delta 9 vs thcp [already covered — link back]
+           mellow fellow hhc (70 vol, KD 9)
+Supporting: mellow fellow 4ml (40 vol), mellow fellow b-012 (40 vol)
+
+=============================================================
+CLUSTER 6 — VAPE HARDWARE / HOW-TO (Device-specific)
+=============================================================
+Intent: Informational
+Recommended Content: "Mellow Fellow Vape Chart & Device Guide — Which Hardware for Which Product"
+Recommended URL: /blog/mellow-fellow-vape-chart-guide
+Priority: LOW-MEDIUM (50 vol)
+
+Primary:   mellow fellow chart (50 vol, KD 29)
+Secondary: mellow fellow app (50 vol, KD 20)
+           mellow fellow led screen instructions [covered in post 2 — link back]
+           mellow fellow t 006 / t 008 / t 010 (model number cluster)
+Supporting: mellow fellow b 009, mellow fellow 2g cart, mellow fellow 4ml
+
+=============================================================
+CLUSTER 7 — WELLNESS / CBD FOCUS
+=============================================================
+Intent: Informational / Commercial
+Recommended Content: "Mellow Fellow Wellness Products: CBD Gummies, Relief Vapes & Non-Intoxicating Options"
+Recommended URL: /blog/mellow-fellow-wellness-products
+Priority: MEDIUM (140 vol primary)
+
+Primary:   mellow fellow wellness (140 vol, KD 4)
+Secondary: mellow fellow wellness gummies (70 vol, KD 8)
+           mellow fellow edibles [covered — link back to edibles post]
+Supporting: are mellow fellow carts good (70 vol), are mellow fellow carts safe (90 vol)
+
+=============================================================
+ORPHAN KEYWORDS (low vol or no clear cluster fit)
+=============================================================
+mellow fellow b 012 (170 vol) — product model; best addressed on product pages
+mellow fellow thc h (40 vol) — variant of thch; handled by existing thch post
+mellow fellow live resin t 004 / t 006 / t 008 (model numbers) — product page SEO
+mellow fellow 4g (70 vol) — covered in size guide post
+café mellow fellow (50 vol) — unrelated café business; skip
+big twist and the mellow fellows (140 vol) — music act; skip
+the mellow fellow princeton (90 vol) — local business; local cluster above
+fellow mellow bato (50 vol) — unrelated; skip
+mellow fellow fidget spinner (110 vol) — covered in spinner post
+

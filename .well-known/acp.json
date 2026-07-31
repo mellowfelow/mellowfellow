@@ -1,0 +1,30 @@
+{
+  "protocol": {
+    "name": "acp",
+    "version": "0.1.0"
+  },
+  "name": "Mellow Fellow",
+  "description": "Hemp-derived vapes, edibles, flower & concentrates. Adults 21+ only.",
+  "api_base_url": "https://mellowfellowcarts.com",
+  "homepage": "https://mellowfellowcarts.com",
+  "transports": ["https"],
+  "capabilities": {
+    "services": ["product-catalog", "wholesale", "blog", "faq"],
+    "ordering": "human-assisted-whatsapp",
+    "payment_methods": ["crypto-BTC", "crypto-USDT", "bank-transfer"],
+    "currency": "USD",
+    "minimum_order_usd": 100,
+    "free_shipping_threshold_usd": 200
+  },
+  "contact": {
+    "whatsapp": "https://wa.me/12162505746",
+    "email": "info@mellowfellowcarts.com"
+  },
+  "legal": {
+    "age_restriction": "21+",
+    "region": "US-FL",
+    "ships_to": "US nationwide",
+    "product_type": "hemp-derived",
+    "compliance": "Farm Bill compliant"
+  }
+}

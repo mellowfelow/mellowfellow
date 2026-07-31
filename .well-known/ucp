@@ -1,0 +1,55 @@
+{
+  "ucp": "1.0",
+  "protocol_version": "1.0",
+  "site": "https://mellowfellowcarts.com",
+  "name": "Mellow Fellow",
+  "description": "Hemp-derived vapes, edibles, flower & concentrates. Adults 21+ only. Ships USA-wide.",
+  "spec": "https://ucp.dev/specification/overview/",
+  "schema": "https://ucp.dev/schema/v1.json",
+  "services": [
+    {
+      "id": "product-catalog",
+      "type": "catalog",
+      "url": "https://mellowfellowcarts.com/shop",
+      "description": "Full product catalog — disposable vapes, cartridges, edibles, flower, concentrates, drinks"
+    },
+    {
+      "id": "order",
+      "type": "commerce",
+      "url": "https://wa.me/12162505746",
+      "description": "Place orders via WhatsApp — human-assisted checkout"
+    },
+    {
+      "id": "wholesale",
+      "type": "b2b",
+      "url": "https://mellowfellowcarts.com/wholesale",
+      "description": "Wholesale pricing — 5+ units 30% off, 10+ 40% off, 25+ 50% off"
+    },
+    {
+      "id": "blog",
+      "type": "content",
+      "url": "https://mellowfellowcarts.com/blog",
+      "description": "Educational content on THCa, THCp, live resin, delta-8, cannabinoids"
+    }
+  ],
+  "capabilities": ["browse", "inquiry", "wholesale", "content"],
+  "endpoints": {
+    "catalog": "https://mellowfellowcarts.com/shop",
+    "contact": "https://mellowfellowcarts.com/contact",
+    "agent_skills": "https://mellowfellowcarts.com/.well-known/agent-skills/index.json",
+    "mcp_server_card": "https://mellowfellowcarts.com/.well-known/mcp/server-card.json",
+    "api_catalog": "https://mellowfellowcarts.com/.well-known/api-catalog",
+    "llms_txt": "https://mellowfellowcarts.com/llms.txt"
+  },
+  "currency": "USD",
+  "minimum_order_usd": 100,
+  "free_shipping_threshold_usd": 200,
+  "payment_methods": ["crypto-BTC", "crypto-USDT", "bank-transfer"],
+  "region": "US-FL",
+  "ships_to": "US nationwide",
+  "legal": {
+    "age_restriction": "21+",
+    "product_type": "hemp-derived",
+    "compliance": "Farm Bill compliant"
+  }
+}

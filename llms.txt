@@ -1,0 +1,88 @@
+# Mellow Fellow
+> Official hemp-derived vapes, live resin carts, gummies & THCa flower. South Florida. Ships USA-wide. Adults 21+ only.
+
+## About
+Mellow Fellow is a South Florida-based hemp-derived cannabis brand specializing in the Destination Series — a line of curated cannabinoid blends (Euphoria, Dream, Creativity, Introvert, Tranquility, Desire, Charged, Recover, Motivation, Wanderlust, Clarity, Laughter, Grounded, Connection, Adventure, Harmony, Limitless, Passion). All products are Farm Bill compliant and third-party lab tested.
+
+- Website: https://mellowfellowcarts.com
+- WhatsApp: https://wa.me/12162505746
+- Email: info@mellowfellowcarts.com
+- Min order: $100 | Free shipping: orders over $200
+- Payment: Crypto (BTC/USDT) + Bank Transfer
+- First order discount: 10% with code MeFe (crypto)
+
+## Product Categories
+
+### Disposable Vapes
+- Spinners (1ml Terp Sauce) — $14.99
+- Live Resin (0.5ml / 1ml / 2ml / 4ml) — $9.99–$34.99
+- Terp Sauce (2ml / 5ml) — $19.99–$34.99
+- THCh 0.5g — $14.99
+- THCp 0.5g — $14.99
+- Premium Blends 2ml — $19.99
+- Delta-8 2ml — $14.99
+- Wellness CBD 1ml — $14.99
+- [Shop Disposables](https://mellowfellowcarts.com/shop/disposables)
+
+### Vape Cartridges
+- Terp Sauce 2ml — $19.99
+- Live Resin 1ml/2ml — $14.99–$19.99
+- Live Resin Duo 4ml — $34.99
+- THCp 0.5ml — $14.99
+- Premium Blends 2ml — $19.99
+- Delta-8 1ml — $14.99
+- [Shop Cartridges](https://mellowfellowcarts.com/shop/cartridges)
+
+### Edibles
+- Wellness Gummies (CBG/CBD/CBN) — $9.99–$59.99
+- Live Resin M-Fusions 1000mg — $34.99
+- Delta-9 Live Resin 400mg — $24.99
+- THCp Bursts 2.5mg / 25mg — $4.99–$19.99
+- Microdose Delta-9 80mg — $19.99
+- Max Dose 10,000mg — $59.99
+- Baklava Sticks Delta-9 40mg — $9.99
+- [Shop Edibles](https://mellowfellowcarts.com/shop/edibles)
+
+### Flower
+- THCa One Hitters 3.5g — $14.99
+- THCp One Hitters 3.5g — $16.99
+- THCa Blunts 2g — $12.99
+- THCp Blunts 2g — $14.99
+- THCa Hash Hole Prerolls 2g — $19.99
+- THCa 1g Prerolls — $9.99
+- THCa Private Reserve 2pc — $24.99
+- THCp Hash Hole Prerolls 2g — $22.99
+- THCa Sachets 1g — $8.99
+- THCa Exotic Flower Jars 3.5g — $29.99
+- THCa Exotic Flower Jars 1oz — $59.99
+- [Shop Flower](https://mellowfellowcarts.com/shop/flower)
+
+### Concentrates
+- THCa Budder Jars 2g — $34.99
+- [Shop Concentrates](https://mellowfellowcarts.com/shop/concentrates)
+
+### Syringes
+- Terp Sauce Syringes 2ml — $24.99
+- [Shop Syringes](https://mellowfellowcarts.com/shop/syringes)
+
+### Drinks
+- Delta-9 THC Seltzers 20mg (4-pack / 12-pack) — $18.99–$49.99
+- Delta-9 THC Mixers 10pc — $29.99
+- [Shop Drinks](https://mellowfellowcarts.com/shop/drinks)
+
+## Wholesale
+Wholesale pricing available for retailers. Tiers: 5+ units = 30% off, 10+ = 40% off, 25+ = 50% off.
+Contact via WhatsApp or visit: https://mellowfellowcarts.com/wholesale
+
+## Blog & Education
+32 educational posts covering THCa, THCp, THCh, live resin, delta-8, delta-9, product guides, and reviews.
+https://mellowfellowcarts.com/blog
+
+## Legal
+Hemp-derived products. Adults 21+ only. Farm Bill compliant. Third-party lab tested. COA available on request.
+
+## Agent Resources
+- API Catalog: https://mellowfellowcarts.com/.well-known/api-catalog
+- Agent Skills: https://mellowfellowcarts.com/.well-known/agent-skills/index.json
+- MCP Server Card: https://mellowfellowcarts.com/.well-known/mcp/server-card.json
+- Auth Guide: https://mellowfellowcarts.com/auth.md

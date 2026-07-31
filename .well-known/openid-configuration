@@ -1,0 +1,14 @@
+{
+  "issuer": "https://mellowfellowcarts.com",
+  "note": "Mellow Fellow does not operate an OpenID Connect provider. All site resources are publicly accessible without authentication. No OAuth flows are required or supported.",
+  "public_site": true,
+  "authorization_endpoint": null,
+  "token_endpoint": null,
+  "userinfo_endpoint": null,
+  "jwks_uri": null,
+  "scopes_supported": [],
+  "response_types_supported": [],
+  "grant_types_supported": [],
+  "subject_types_supported": [],
+  "id_token_signing_alg_values_supported": []
+}

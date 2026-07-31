@@ -1,0 +1,55 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/server-card/v1.json",
+  "serverInfo": {
+    "name": "Mellow Fellow",
+    "version": "1.0.0",
+    "description": "Mellow Fellow — official hemp-derived vapes, live resin carts, gummies, THCa flower & concentrates. South Florida. Ships USA-wide.",
+    "homepage": "https://mellowfellowcarts.com",
+    "contact": {
+      "email": "info@mellowfellowcarts.com",
+      "whatsapp": "+12162505746"
+    }
+  },
+  "transport": {
+    "type": "http",
+    "endpoint": "https://mellowfellowcarts.com"
+  },
+  "capabilities": {
+    "resources": [
+      {
+        "name": "product-catalog",
+        "description": "Full catalog of Mellow Fellow hemp-derived products including disposable vapes, vape cartridges, edibles, flower, concentrates and drinks",
+        "uri": "https://mellowfellowcarts.com/shop"
+      },
+      {
+        "name": "wholesale-info",
+        "description": "Wholesale pricing tiers and ordering information for retailers",
+        "uri": "https://mellowfellowcarts.com/wholesale"
+      },
+      {
+        "name": "blog",
+        "description": "Educational content about THCa, THCp, live resin, delta-8, hemp products",
+        "uri": "https://mellowfellowcarts.com/blog"
+      },
+      {
+        "name": "faq",
+        "description": "Frequently asked questions about Mellow Fellow products, ordering and shipping",
+        "uri": "https://mellowfellowcarts.com/faq"
+      }
+    ],
+    "commerce": {
+      "ordering": "WhatsApp or email",
+      "payment": ["crypto-BTC", "crypto-USDT", "bank-transfer"],
+      "currency": "USD",
+      "minimumOrder": 100,
+      "freeShipping": 200,
+      "region": "US-FL",
+      "ships": "US-nationwide"
+    }
+  },
+  "legal": {
+    "ageRestriction": "21+",
+    "productType": "hemp-derived",
+    "compliance": "Farm Bill compliant, third-party lab tested"
+  }
+}

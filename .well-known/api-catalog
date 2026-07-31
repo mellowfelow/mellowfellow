@@ -1,0 +1,29 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://mellowfellowcarts.com/",
+      "https://www.iana.org/assignments/link-relations/service-doc": [
+        { "href": "https://mellowfellowcarts.com/faq" }
+      ],
+      "https://www.iana.org/assignments/link-relations/describedby": [
+        { "href": "https://mellowfellowcarts.com/.well-known/api-catalog" }
+      ]
+    },
+    {
+      "anchor": "https://mellowfellowcarts.com/shop",
+      "https://www.iana.org/assignments/link-relations/service-doc": [
+        { "href": "https://mellowfellowcarts.com/shop" }
+      ],
+      "type": "text/html",
+      "title": "Mellow Fellow Product Catalog — 250+ hemp-derived vapes, edibles, flower & concentrates"
+    },
+    {
+      "anchor": "https://mellowfellowcarts.com/wholesale",
+      "https://www.iana.org/assignments/link-relations/service-doc": [
+        { "href": "https://mellowfellowcarts.com/wholesale" }
+      ],
+      "type": "text/html",
+      "title": "Mellow Fellow Wholesale — bulk pricing for retailers"
+    }
+  ]
+}

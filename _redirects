@@ -1,0 +1,7 @@
+# Cloudflare Pages redirects
+# Every page is now a real static HTML file (folder/index.html),
+# so there is NO catch-all SPA rewrite. Pages serves each URL directly.
+
+# Legacy SPA paths -> real pages (301 permanent)
+/wa-checkout   /checkout   301
+/index.html    /           301

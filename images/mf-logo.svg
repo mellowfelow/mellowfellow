@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Mellow Fellow">
+  <circle cx="24" cy="24" r="23" fill="#1a1a18"/>
+  <circle cx="24" cy="24" r="23" fill="none" stroke="#7a8c6e" stroke-width="1.5"/>
+  <!-- leaf -->
+  <path d="M24 11c-5.5 5-8 10-8 15.5 0 4.2 3.4 7.5 8 7.5s8-3.3 8-7.5C32 21 29.5 16 24 11z"
+        fill="#7a8c6e"/>
+  <path d="M24 13.5v19.5" stroke="#1a1a18" stroke-width="1.4" stroke-linecap="round"/>
+  <path d="M24 20l-4.2-3M24 24.5l-5-3.4M24 29l-4-2.8M24 20l4.2-3M24 24.5l5-3.4M24 29l4-2.8"
+        stroke="#1a1a18" stroke-width="1.1" stroke-linecap="round" fill="none"/>
+</svg>
