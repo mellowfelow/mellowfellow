@@ -8,36 +8,35 @@
       "name": "browse-products",
       "type": "navigation",
       "description": "Browse the full Mellow Fellow product catalog by category: disposable vapes, vape cartridges, edibles, flower, concentrates, syringes, drinks",
-      "url": "https://mellowfellowcarts.com/shop",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url": "https://mellowfellowcarts.com/shop/",
+      "sha256": "1c90e9bc32011f689d76c60fedb5058e333620bfd25249e1d7a5aa6d60873ae4"
     },
     {
       "name": "order-via-whatsapp",
       "type": "commerce",
       "description": "Place an order for Mellow Fellow products via WhatsApp. Minimum order $100. Free shipping over $200. Accepts crypto BTC/USDT and bank transfer.",
-      "url": "https://wa.me/12162505746",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url": "https://wa.me/12162505746"
     },
     {
       "name": "wholesale-inquiry",
       "type": "commerce",
       "description": "Inquire about wholesale pricing. Tiers: 5+ units 30% off, 10+ units 40% off, 25+ units 50% off retail.",
-      "url": "https://mellowfellowcarts.com/wholesale",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url": "https://mellowfellowcarts.com/wholesale/",
+      "sha256": "4d8f5211c52e745f398689e12bbfa90d0f01fa30dcfc55ae6083be8e09dfa897"
     },
     {
       "name": "product-education",
       "type": "content",
       "description": "Read educational blog posts about THCa, THCp, THCh, live resin, delta-8, delta-9, hemp-derived cannabinoids and Mellow Fellow product guides",
-      "url": "https://mellowfellowcarts.com/blog",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url": "https://mellowfellowcarts.com/blog/",
+      "sha256": "5fe90b188824417c7e8ad9dab444056ebd686a33ea442ba3d27c87e54efb6e9e"
     },
     {
       "name": "contact",
       "type": "support",
       "description": "Contact Mellow Fellow via email or WhatsApp for product questions, orders, or wholesale inquiries",
-      "url": "https://mellowfellowcarts.com/contact",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      "url": "https://mellowfellowcarts.com/contact/",
+      "sha256": "3679e4e7c33c9b103682de58cde29314ed5e2746cfefd0875408f88acae372ec"
     }
   ]
 }

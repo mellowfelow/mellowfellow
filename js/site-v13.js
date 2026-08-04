@@ -485,6 +485,7 @@
       w3Body.append('from_name', 'Mellow Fellow Orders');
       w3Body.append('email', 'info@mellowfellowcarts.com');
       w3Body.append('replyto', email);
+      w3Body.append('botcheck', '');
       w3Body.append('message', orderBody);
 
       fetch('https://api.web3forms.com/submit', {
@@ -558,6 +559,7 @@
          see the matching fix + explanation on the checkout submit handler. */
       var fd = new FormData();
       for (var k in payload) { if (payload.hasOwnProperty(k)) fd.append(k, payload[k]); }
+      fd.append('botcheck', '');
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
