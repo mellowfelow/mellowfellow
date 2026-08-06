@@ -301,10 +301,13 @@
     function updateWallets() {
       var sel = document.querySelector('input[name="payment"]:checked');
       var w = sel ? sel.getAttribute('data-wallet') : null;
+      var isCard = !!(sel && sel.getAttribute('data-card') === '1');
       var btc = document.getElementById('walletBtc');
       var usdt = document.getElementById('walletUsdt');
+      var card = document.getElementById('walletCard');
       if (btc) btc.hidden = (w !== 'btc');
       if (usdt) usdt.hidden = (w !== 'usdt');
+      if (card) card.hidden = !isCard;
     }
 
     paint();
@@ -400,7 +403,10 @@
       var rand = Math.floor(1000 + Math.random() * 9000);
       var orderNum = 'MF-' + ymd + '-' + rand;
 
-      var payment = (document.querySelector('input[name="payment"]:checked') || {}).value || 'Not selected';
+      var paymentEl = document.querySelector('input[name="payment"]:checked');
+      var payment = (paymentEl || {}).value || 'Not selected';
+      var isCard = !!(paymentEl && paymentEl.getAttribute('data-card') === '1');
+      var orderLabel = isCard ? 'PENDING ORDER' : 'NEW ORDER';
       var customer = val('coFirst') + ' ' + val('coLast');
       var addr = val('coAddr') + (val('coAddr2') ? ', ' + val('coAddr2') : '') +
         ', ' + val('coCity') + ', ' + val('coState') + ' ' + val('coZip');
@@ -411,7 +417,7 @@
       }).join('\n');
 
       var orderBody =
-        'NEW ORDER  ' + orderNum + '\n' +
+        orderLabel + '  ' + orderNum + '\n' +
         '====================================\n\n' +
         'CUSTOMER\n' +
         '  Name:  ' + customer + '\n' +
@@ -481,7 +487,7 @@
          can't block it. This is Web3Forms' own documented method. */
       var w3Body = new FormData();
       w3Body.append('access_key', W3KEY);
-      w3Body.append('subject', 'NEW ORDER ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')');
+      w3Body.append('subject', orderLabel + ' ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')');
       w3Body.append('from_name', 'Mellow Fellow Orders');
       w3Body.append('email', 'info@mellowfellowcarts.com');
       w3Body.append('replyto', email);
@@ -542,6 +548,32 @@
           '<div class="ty-row"><span>Items</span><strong>' + data.itemCount + '</strong></div>' +
           '<div class="ty-row"><span>Payment Method</span><strong>' + data.payment + '</strong></div>' +
           '<div class="ty-row"><span>Confirmation Sent To</span><strong>' + data.email + '</strong></div>';
+      }
+      var cardBox = document.getElementById('tyCardPay');
+      if (cardBox) {
+        if (data.payment === 'Credit/Debit Card') {
+          cardBox.hidden = false;
+          cardBox.innerHTML =
+            '<p class="ty-cardpay-title">&#x1F4B3; Complete Your Card Payment</p>' +
+            '<p class="ty-cardpay-text">Click below to securely pay <strong>$' + data.total +
+              '</strong> by credit or debit card. This opens in a secure payment window — ' +
+              'your order is already confirmed either way.</p>' +
+            '<button type="button" class="btn-primary ty-cardpay-btn" id="tyCardPayBtn">Pay $' +
+              data.total + ' Now &rarr;</button>';
+          var payBtn = document.getElementById('tyCardPayBtn');
+          if (payBtn) payBtn.addEventListener('click', function () {
+            var url = 'https://flutterwave.com/pay/xl8olgxzbsjy?amount=' +
+              encodeURIComponent(data.total) + '&currency=USD';
+            var w = 520, h = 720;
+            var left = Math.max(0, (screen.width - w) / 2);
+            var top = Math.max(0, (screen.height - h) / 2);
+            window.open(url, 'MellowFellowPay',
+              'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left +
+              ',resizable=yes,scrollbars=yes');
+          });
+        } else {
+          cardBox.hidden = true;
+        }
       }
     } else {
       numEl.textContent = 'N/A';

@@ -788,6 +788,19 @@
 }
 .ty-row:last-child { border-bottom: none; }
 .ty-row strong { color: var(--char); font-weight: 600; }
+.ty-cardpay {
+  background: linear-gradient(135deg, var(--gold-l, #e8d4aa) 0%, var(--cream-d, #ede6d6) 100%);
+  border: 1.5px solid var(--gold, #c9a96e);
+  border-radius: 14px; padding: 20px 22px; margin-bottom: 20px;
+  text-align: center;
+}
+.ty-cardpay-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; font-weight: 600; color: var(--char);
+  margin: 0 0 8px;
+}
+.ty-cardpay-text { font-size: 13px; color: var(--char-m, var(--wg)); line-height: 1.6; margin: 0 0 16px; }
+.ty-cardpay-btn { width: 100%; justify-content: center; }
 .ty-help { font-size: 12.5px; color: var(--wg); line-height: 1.6; margin: 0 0 22px; }
 .ty-help a { color: var(--sage-d); }
 .ty-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
