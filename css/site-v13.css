@@ -135,6 +135,91 @@
 .site-header { z-index: 1200; }
 
 /* ============================================================
+   CART DRAWER (mini-cart flyout) — shown on add-to-cart and on
+   clicking the header cart icon. Works on desktop AND mobile
+   (unlike .m-drawer above, this is never display:none).
+   ============================================================ */
+.cd-overlay {
+  position: fixed; inset: 0;
+  background: rgba(26,26,24,.55);
+  z-index: 1550;
+  opacity: 0; transition: opacity .3s ease;
+}
+.cd-overlay[hidden] { display: none !important; }
+.cd-overlay.open { opacity: 1; }
+
+.cart-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0;
+  width: 90vw; max-width: 400px;
+  background: var(--cream, #f5f0e8);
+  z-index: 1600;
+  transform: translateX(102%);
+  transition: transform .32s cubic-bezier(.4,0,.2,1);
+  display: flex; flex-direction: column;
+  box-shadow: -16px 0 48px rgba(0,0,0,.28);
+  -webkit-overflow-scrolling: touch;
+}
+.cart-drawer[hidden] { display: none !important; }
+.cart-drawer.open { transform: translateX(0); }
+
+.cd-top {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--bdr, rgba(26,26,24,.1));
+  flex-shrink: 0;
+}
+.cd-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 21px; font-weight: 500; color: var(--char);
+  display: flex; align-items: center; gap: 9px;
+}
+.cd-count {
+  font-family: inherit; font-size: 12px; font-weight: 700;
+  background: var(--sage-d); color: #fff;
+  border-radius: 20px; padding: 2px 9px; line-height: 1.5;
+}
+.cd-close {
+  background: none; border: none;
+  font-size: 28px; line-height: 1;
+  color: var(--char); cursor: pointer;
+  width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+}
+.cd-close:hover { background: var(--cream-d); }
+
+.cd-items { flex: 1; overflow-y: auto; padding: 4px 20px; }
+.cd-item {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px; padding: 14px 0;
+  border-bottom: 1px solid var(--bdr, rgba(26,26,24,.08));
+}
+.cd-item-info { flex: 1; }
+.cd-item-name { font-size: 13px; font-weight: 500; color: var(--char); margin: 0 0 8px; line-height: 1.4; }
+.cd-item-price { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 600; color: var(--char); white-space: nowrap; }
+
+.cd-empty { text-align: center; padding: 52px 12px; }
+.cd-empty-icon { font-size: 44px; margin-bottom: 14px; }
+.cd-empty p { color: var(--wg); margin-bottom: 18px; }
+
+.cd-footer { flex-shrink: 0; padding: 16px 20px 20px; border-top: 1px solid var(--bdr, rgba(26,26,24,.1)); }
+.cd-footer[hidden] { display: none !important; }
+.cd-note { font-size: 12px; margin: 0 0 12px; color: var(--wg); }
+.cd-note.warn { color: #a0522d; }
+.cd-note.ok { color: var(--sage-d); }
+.cd-subtotal-row {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 15px; color: var(--char); margin-bottom: 14px;
+}
+.cd-subtotal-row strong { font-family: 'Cormorant Garamond', serif; font-size: 22px; }
+.cd-checkout { display: block; text-align: center; margin-bottom: 8px; }
+.cd-viewcart { display: block; text-align: center; }
+
+@media (max-width: 480px) {
+  .cart-drawer { width: 100vw; max-width: none; }
+}
+
+/* ============================================================
    AGE GATE
    ============================================================ */
 #ageGate {

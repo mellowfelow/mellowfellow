@@ -46,6 +46,7 @@
     if (!toggle || !dr || !overlay) return;
 
     function open() {
+      closeCartDrawer();
       dr.hidden = false; overlay.hidden = false;
       /* force reflow so the transition runs */
       void dr.offsetWidth;
@@ -126,7 +127,132 @@
       });
     }
     setCart(c); updateBadge();
-    toast('Added to cart!');
+    openCartDrawer();
+  }
+
+  /* ====== CART DRAWER (mini-cart flyout) ====== */
+  function buildCartDrawer() {
+    if (document.getElementById('cartDrawer')) return;
+    var ov = document.createElement('div');
+    ov.className = 'cd-overlay'; ov.id = 'cdOverlay'; ov.hidden = true;
+    var dr = document.createElement('aside');
+    dr.className = 'cart-drawer'; dr.id = 'cartDrawer'; dr.hidden = true;
+    dr.setAttribute('aria-label', 'Shopping cart');
+    dr.innerHTML =
+      '<div class="cd-top">' +
+        '<span class="cd-title">Your Cart <span class="cd-count" id="cdCount">0</span></span>' +
+        '<button class="cd-close" id="cdClose" type="button" aria-label="Close cart">&times;</button>' +
+      '</div>' +
+      '<div class="cd-items" id="cdItems"></div>' +
+      '<div class="cd-footer" id="cdFooter" hidden>' +
+        '<p class="cd-note" id="cdNote"></p>' +
+        '<div class="cd-subtotal-row"><span>Subtotal</span><strong id="cdSubtotal">$0.00</strong></div>' +
+        '<a class="btn-primary cd-checkout" href="/checkout" id="cdCheckoutBtn">Checkout &rarr;</a>' +
+        '<a class="btn-outline cd-viewcart" href="/cart">View Full Cart</a>' +
+      '</div>';
+    document.body.appendChild(ov);
+    document.body.appendChild(dr);
+
+    function close() {
+      dr.classList.remove('open'); ov.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(function () {
+        if (!dr.classList.contains('open')) { dr.hidden = true; ov.hidden = true; }
+      }, 320);
+    }
+    ov.addEventListener('click', close);
+    dr.querySelector('#cdClose').addEventListener('click', close);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && dr.classList.contains('open')) close();
+    });
+    /* qty +/- and remove, delegated within the drawer */
+    dr.addEventListener('click', function (e) {
+      var ch = e.target.closest('[data-cdqty]');
+      var rm = e.target.closest('[data-cdremove]');
+      if (ch) {
+        var c = getCart();
+        var i = parseInt(ch.getAttribute('data-cdqty'), 10);
+        if (c[i]) {
+          c[i].qty = Math.max(1, c[i].qty + parseInt(ch.getAttribute('data-d'), 10));
+          setCart(c); updateBadge(); renderCartDrawer(); renderCartPage();
+        }
+      }
+      if (rm) {
+        var c2 = getCart();
+        c2.splice(parseInt(rm.getAttribute('data-cdremove'), 10), 1);
+        setCart(c2); updateBadge(); renderCartDrawer(); renderCartPage();
+      }
+    });
+    dr._close = close;
+  }
+  function closeCartDrawer() {
+    var dr = document.getElementById('cartDrawer');
+    if (dr && dr._close) dr._close();
+  }
+  function openCartDrawer() {
+    buildCartDrawer();
+    renderCartDrawer();
+    var dr = document.getElementById('cartDrawer');
+    var ov = document.getElementById('cdOverlay');
+    if (!dr || !ov) return;
+    /* the mobile nav drawer and the cart drawer both slide from the right —
+       never show both at once */
+    var mdr = document.getElementById('mobileDrawer');
+    var mov = document.getElementById('mDrawerOverlay');
+    if (mdr && mdr.classList.contains('open')) {
+      mdr.classList.remove('open'); if (mov) mov.classList.remove('open');
+    }
+    dr.hidden = false; ov.hidden = false;
+    void dr.offsetWidth;
+    dr.classList.add('open'); ov.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function renderCartDrawer() {
+    var itemsEl = document.getElementById('cdItems');
+    if (!itemsEl) return;
+    var c = getCart();
+    var countEl = document.getElementById('cdCount');
+    var subEl = document.getElementById('cdSubtotal');
+    var noteEl = document.getElementById('cdNote');
+    var footer = document.getElementById('cdFooter');
+    if (countEl) countEl.textContent = cartCount();
+    if (!c.length) {
+      itemsEl.innerHTML = '<div class="cd-empty"><p class="cd-empty-icon">🛒</p>' +
+        '<p>Your cart is empty.</p><a class="btn-outline" href="/shop">Browse Products</a></div>';
+      if (footer) footer.hidden = true;
+      return;
+    }
+    if (footer) footer.hidden = false;
+    var html = '', sub = 0;
+    c.forEach(function (it, idx) {
+      sub += it.price * it.qty;
+      html += '<div class="cd-item">' +
+        '<div class="cd-item-info"><p class="cd-item-name">' + it.name + '</p>' +
+        '<div class="qty-control">' +
+          '<button class="qty-btn" type="button" data-cdqty="' + idx + '" data-d="-1">&minus;</button>' +
+          '<span class="qty-num">' + it.qty + '</span>' +
+          '<button class="qty-btn" type="button" data-cdqty="' + idx + '" data-d="1">+</button>' +
+          '<button class="btn-remove" type="button" data-cdremove="' + idx + '">Remove</button>' +
+        '</div></div>' +
+        '<span class="cd-item-price">$' + (it.price * it.qty).toFixed(2) + '</span>' +
+        '</div>';
+    });
+    itemsEl.innerHTML = html;
+    if (subEl) subEl.textContent = '$' + sub.toFixed(2);
+    if (noteEl) {
+      noteEl.innerHTML = sub < MIN_ORDER
+        ? '⚠ Minimum order is $' + MIN_ORDER + '. Add <strong>$' + (MIN_ORDER - sub).toFixed(2) + '</strong> more.'
+        : '✓ Minimum met. ' + (sub >= FREE_SHIP_OVER ? 'Free shipping applied!' : 'Add $' + (FREE_SHIP_OVER - sub).toFixed(2) + ' more for FREE shipping.');
+      noteEl.className = 'cd-note ' + (sub < MIN_ORDER ? 'warn' : 'ok');
+    }
+  }
+  function bindCartTrigger() {
+    var link = document.querySelector('a[aria-label="Shopping cart"]');
+    if (!link) return;
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      openCartDrawer();
+    });
   }
 
   /* ====== ADD-TO-CART + QTY BUTTONS ====== */
@@ -555,15 +681,14 @@
           cardBox.hidden = false;
           cardBox.innerHTML =
             '<p class="ty-cardpay-title">&#x1F4B3; Complete Your Card Payment</p>' +
-            '<p class="ty-cardpay-text">Click below to securely pay <strong>$' + data.total +
-              '</strong> by credit or debit card. This opens in a secure payment window — ' +
-              'your order is already confirmed either way.</p>' +
-            '<button type="button" class="btn-primary ty-cardpay-btn" id="tyCardPayBtn">Pay $' +
-              data.total + ' Now &rarr;</button>';
+            '<p class="ty-cardpay-text">Click below to open our secure Flutterwave payment page. ' +
+              'When prompted, enter <strong>$' + data.total + '</strong> as the amount — the exact ' +
+              'total shown above — then complete your card details. Your order is already ' +
+              'confirmed either way.</p>' +
+            '<button type="button" class="btn-primary ty-cardpay-btn" id="tyCardPayBtn">Open Secure Payment Page &rarr;</button>';
           var payBtn = document.getElementById('tyCardPayBtn');
           if (payBtn) payBtn.addEventListener('click', function () {
-            var url = 'https://flutterwave.com/pay/xl8olgxzbsjy?amount=' +
-              encodeURIComponent(data.total) + '&currency=USD';
+            var url = 'https://flutterwave.com/pay/xl8olgxzbsjy?currency=USD';
             var w = 520, h = 720;
             var left = Math.max(0, (screen.width - w) / 2);
             var top = Math.max(0, (screen.height - h) / 2);
@@ -767,6 +892,8 @@
     shopSidebar();
     search();
     updateBadge();
+    buildCartDrawer();
+    bindCartTrigger();
     bindShop();
     renderCartPage();
     renderCheckout();
