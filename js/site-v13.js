@@ -427,13 +427,10 @@
     function updateWallets() {
       var sel = document.querySelector('input[name="payment"]:checked');
       var w = sel ? sel.getAttribute('data-wallet') : null;
-      var isCard = !!(sel && sel.getAttribute('data-card') === '1');
       var btc = document.getElementById('walletBtc');
       var usdt = document.getElementById('walletUsdt');
-      var card = document.getElementById('walletCard');
       if (btc) btc.hidden = (w !== 'btc');
       if (usdt) usdt.hidden = (w !== 'usdt');
-      if (card) card.hidden = !isCard;
     }
 
     paint();
@@ -531,8 +528,7 @@
 
       var paymentEl = document.querySelector('input[name="payment"]:checked');
       var payment = (paymentEl || {}).value || 'Not selected';
-      var isCard = !!(paymentEl && paymentEl.getAttribute('data-card') === '1');
-      var orderLabel = isCard ? 'PENDING ORDER' : 'NEW ORDER';
+      var orderLabel = 'NEW ORDER';
       var customer = val('coFirst') + ' ' + val('coLast');
       var addr = val('coAddr') + (val('coAddr2') ? ', ' + val('coAddr2') : '') +
         ', ' + val('coCity') + ', ' + val('coState') + ' ' + val('coZip');
@@ -676,30 +672,7 @@
           '<div class="ty-row"><span>Confirmation Sent To</span><strong>' + data.email + '</strong></div>';
       }
       var cardBox = document.getElementById('tyCardPay');
-      if (cardBox) {
-        if (data.payment === 'Credit/Debit Card') {
-          cardBox.hidden = false;
-          cardBox.innerHTML =
-            '<p class="ty-cardpay-title">&#x1F4B3; Complete Your Card Payment</p>' +
-            '<p class="ty-cardpay-text">Click below to open our secure Flutterwave payment page. ' +
-              'When prompted, enter <strong>$' + data.total + '</strong> as the amount — the exact ' +
-              'total shown above — then complete your card details. Your order is already ' +
-              'confirmed either way.</p>' +
-            '<button type="button" class="btn-primary ty-cardpay-btn" id="tyCardPayBtn">Open Secure Payment Page &rarr;</button>';
-          var payBtn = document.getElementById('tyCardPayBtn');
-          if (payBtn) payBtn.addEventListener('click', function () {
-            var url = 'https://flutterwave.com/pay/xl8olgxzbsjy?currency=USD';
-            var w = 520, h = 720;
-            var left = Math.max(0, (screen.width - w) / 2);
-            var top = Math.max(0, (screen.height - h) / 2);
-            window.open(url, 'MellowFellowPay',
-              'width=' + w + ',height=' + h + ',top=' + top + ',left=' + left +
-              ',resizable=yes,scrollbars=yes');
-          });
-        } else {
-          cardBox.hidden = true;
-        }
-      }
+      if (cardBox) cardBox.hidden = true;
     } else {
       numEl.textContent = 'N/A';
       var d2 = document.getElementById('tyDetails');
