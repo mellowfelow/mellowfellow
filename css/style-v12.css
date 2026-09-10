@@ -1271,8 +1271,6 @@ a[onclick] { cursor: pointer; }
 .page-hero-img h2 em          { color: var(--gold);   }
 .page-hero-img p              { color: rgba(245,240,232,0.75); }
 
-/* wholesale hero also gets dark treatment */
-#page-wholesale .page-hero { background: var(--char); }
 
 /* =====================================================
    ENHANCED PRODUCT CARDS WITH IMAGES
@@ -1727,8 +1725,6 @@ h1, h2, h3, h4, h5, h6 { text-align: center; }
 #page-wholesale .page-hero-inner { text-align: center; }
 #page-wholesale .two-col-section  { text-align: center; }
 #page-wholesale h2                { text-align: center; }
-#page-wholesale .wholesale-perk   { justify-content: center; }
-#page-wholesale .perk-text        { text-align: left; } /* perk detail text left */
 #page-wholesale .form-card        { text-align: left; }
 #page-wholesale .form-card-title  { text-align: center; }
 

@@ -528,40 +528,19 @@
 
       var paymentEl = document.querySelector('input[name="payment"]:checked');
       var payment = (paymentEl || {}).value || 'Not selected';
-      var orderLabel = 'NEW ORDER';
       var customer = val('coFirst') + ' ' + val('coLast');
       var addr = val('coAddr') + (val('coAddr2') ? ', ' + val('coAddr2') : '') +
         ', ' + val('coCity') + ', ' + val('coState') + ' ' + val('coZip');
 
       var itemLines = cart.map(function (it) {
-        return '  - ' + it.name + ' x' + it.qty +
-          ' @ $' + it.price.toFixed(2) + ' = $' + (it.price * it.qty).toFixed(2);
+        return it.qty + ' × ' + it.name + '  —  $' + (it.price * it.qty).toFixed(2) +
+          '  ($' + it.price.toFixed(2) + ' each)';
       }).join('\n');
-
-      var orderBody =
-        orderLabel + '  ' + orderNum + '\n' +
-        '====================================\n\n' +
-        'CUSTOMER\n' +
-        '  Name:  ' + customer + '\n' +
-        '  Email: ' + email + '\n' +
-        '  Phone: ' + val('coPhone') + '\n\n' +
-        'SHIPPING ADDRESS\n  ' + addr + '\n\n' +
-        'ITEMS\n' + itemLines + '\n\n' +
-        'TOTALS\n' +
-        '  Subtotal:        $' + t.sub.toFixed(2) + '\n' +
-        (crypto ? '  Crypto Discount: -$' + t.discount.toFixed(2) + ' (10%)\n' : '') +
-        '  Shipping:        ' + (t.ship === 0 ? 'FREE' : '$' + SHIP_FLAT.toFixed(2)) + '\n' +
-        '  ORDER TOTAL:     $' + t.total.toFixed(2) + '\n\n' +
-        'PAYMENT METHOD\n  ' + payment +
-          (crypto ? '\n  Wallet shown to customer: ' +
-            ((document.querySelector('input[name="payment"]:checked') || {}).getAttribute &&
-             document.querySelector('input[name="payment"]:checked').getAttribute('data-wallet') === 'btc'
-              ? 'bc1q95huj62jcxq4pvsa09herj0ssh4aeanc3v8jn2'
-              : '0x3819109CAdeE74becf86F5Ddff8e8A57681ACd04') : '') +
-          '\n\n' +
-        (val('coNotes') ? 'ORDER NOTES\n  ' + val('coNotes') + '\n\n' : '') +
-        '====================================\n' +
-        'Order placed via mellowfellowcarts.com checkout';
+      var walletShown = crypto
+        ? ((paymentEl && paymentEl.getAttribute('data-wallet') === 'btc')
+            ? 'BTC · bc1q95huj62jcxq4pvsa09herj0ssh4aeanc3v8jn2'
+            : 'USDT (ERC-20) · 0x3819109CAdeE74becf86F5Ddff8e8A57681ACd04')
+        : '';
 
       /* notify ops via Telegram (n8n payment-router) — fire-and-forget, never
          blocks or fails order placement if n8n is unreachable */
@@ -609,12 +588,26 @@
          can't block it. This is Web3Forms' own documented method. */
       var w3Body = new FormData();
       w3Body.append('access_key', W3KEY);
-      w3Body.append('subject', orderLabel + ' ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')');
+      w3Body.append('subject', 'New order ' + orderNum + ' — $' + t.total.toFixed(2) + ' (' + payment + ')');
       w3Body.append('from_name', 'Mellow Fellow Orders');
       w3Body.append('email', 'info@mellowfellowcarts.com');
       w3Body.append('replyto', email);
       w3Body.append('botcheck', '');
-      w3Body.append('message', orderBody);
+      /* discrete fields → Web3Forms renders a clean labelled table instead of one text blob */
+      w3Body.append('Order Number', orderNum);
+      w3Body.append('Order Total', '$' + t.total.toFixed(2));
+      w3Body.append('Payment Method', payment);
+      if (crypto) w3Body.append('Crypto Discount', '-$' + t.discount.toFixed(2) + ' (10%)');
+      w3Body.append('Subtotal', '$' + t.sub.toFixed(2));
+      w3Body.append('Shipping', t.ship === 0 ? 'FREE' : '$' + SHIP_FLAT.toFixed(2));
+      w3Body.append('Items', itemLines);
+      w3Body.append('Customer Name', customer);
+      w3Body.append('Customer Email', email);
+      w3Body.append('Customer Phone', val('coPhone') || '—');
+      w3Body.append('Shipping Address', addr);
+      if (val('coNotes')) w3Body.append('Order Notes', val('coNotes'));
+      if (walletShown) w3Body.append('Wallet Address Shown', walletShown);
+      w3Body.append('Source', 'mellowfellowcarts.com checkout');
 
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
@@ -735,11 +728,17 @@
       thankYou: '/thank-you-contact/',
       payload: function (v) {
         return {
-          access_key: W3, subject: 'Mellow Fellow Contact: ' + (v('contactSubject') || 'Inquiry'),
-          from_name: 'Mellow Fellow Website', email: 'info@mellowfellowcarts.com', reply_to: v('contactEmail'),
-          message: 'Name: ' + v('contactName') + '\nEmail: ' + v('contactEmail') +
-            '\nPhone: ' + v('contactPhone') + '\nSubject: ' + v('contactSubject') +
-            '\n\n' + v('contactMsg')
+          access_key: W3,
+          subject: 'New contact message — ' + (v('contactSubject') || 'General enquiry'),
+          from_name: 'Mellow Fellow Website',
+          email: 'info@mellowfellowcarts.com',
+          replyto: v('contactEmail'),
+          'Name': v('contactName'),
+          'Email': v('contactEmail'),
+          'Phone': v('contactPhone') || '—',
+          'Topic': v('contactSubject') || 'General enquiry',
+          'Message': v('contactMsg'),
+          'Source': 'mellowfellowcarts.com contact form'
         };
       }
     });
@@ -750,11 +749,17 @@
       thankYou: '/thank-you-wholesale/',
       payload: function (v) {
         return {
-          access_key: W3, subject: 'NEW Wholesale Application — ' + v('wBiz'),
-          from_name: 'Mellow Fellow Wholesale', email: 'info@mellowfellowcarts.com', reply_to: v('wEmail'),
-          message: 'Business: ' + v('wBiz') + '\nContact: ' + v('wContact') +
-            '\nEmail: ' + v('wEmail') + '\nPhone: ' + v('wPhone') +
-            '\n\nNotes:\n' + v('wNotes')
+          access_key: W3,
+          subject: 'New wholesale application — ' + v('wBiz'),
+          from_name: 'Mellow Fellow Wholesale',
+          email: 'info@mellowfellowcarts.com',
+          replyto: v('wEmail'),
+          'Business Name': v('wBiz'),
+          'Contact Name': v('wContact') || '—',
+          'Email': v('wEmail'),
+          'Phone': v('wPhone') || '—',
+          'Notes': v('wNotes') || '—',
+          'Source': 'mellowfellowcarts.com wholesale form'
         };
       }
     });
