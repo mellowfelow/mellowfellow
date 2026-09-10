@@ -7,8 +7,11 @@
 https://www.mellowfellowcarts.com/*  https://mellowfellowcarts.com/:splat  301!
 
 # Legacy SPA paths -> real pages (301 permanent)
-/wa-checkout   /checkout   301
+/wa-checkout   /checkout/  301
 /index.html    /           301
 
-# Internal strategy docs must never be served publicly
-/docs/*        /404.html   404
+# Internal strategy docs must never be served publicly.
+# _redirects only supports 301/302/303/307/308 (no 404), and redirect rules
+# take precedence over static assets, so this 302 to home means the .md bytes
+# under /docs/ are never sent to a client.
+/docs/*        /           302
