@@ -148,14 +148,15 @@ ul, ol { list-style: none; }
   grid-template-columns: repeat(5, 1fr);
   gap: 16px;
 }
-.mega-col h4 {
+.mega-col h4,
+.mega-col-title {
   font-family: 'Cormorant Garamond', serif;
   font-size: 12px;
   font-weight: 600;
   color: var(--sage-d);
   letter-spacing: .08em;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
   padding-bottom: 8px;
   border-bottom: 1px solid var(--bdr);
 }
@@ -1029,12 +1030,13 @@ ul, ol { list-style: none; }
 .page.active { display: block; }
 
 /* ---- FOOTER HEADING FIX ---- */
-h4.footer-col {
+h4.footer-col,
+p.footer-col {
   font-size: 10px;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--wg);
-  margin-bottom: 15px;
+  margin: 0 0 15px;
   font-weight: 500;
   display: block;
 }

@@ -14,7 +14,7 @@
     {
       "name": "order-via-whatsapp",
       "type": "commerce",
-      "description": "Place an order for Mellow Fellow products via WhatsApp. Minimum order $100. Free shipping over $200. Accepts crypto BTC/USDT and bank transfer.",
+      "description": "Place an order for Mellow Fellow products via WhatsApp. Minimum order $100. Free shipping over $200. Accepts Bitcoin, USDT, Apple Pay, Chime and CashApp.",
       "url": "https://wa.me/12162505746"
     },
     {

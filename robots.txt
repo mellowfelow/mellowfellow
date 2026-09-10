@@ -3,6 +3,7 @@
 
 User-agent: *
 Allow: /
+Disallow: /docs/
 # Note: /cart, /checkout and /order-confirmed are handled with a
 # <meta name="robots" content="noindex, follow"> tag on the pages
 # themselves. They are intentionally NOT disallowed here so Google can

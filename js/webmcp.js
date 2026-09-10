@@ -21,15 +21,16 @@
           }
         },
         execute: async ({ category }) => {
-          const base = "https://mellowfellowcarts.com/shop";
-          const url = category ? `${base}/${category}` : base;
+          const url = category
+            ? `https://mellowfellowcarts.com/shop/${category}/`
+            : "https://mellowfellowcarts.com/shop/";
           window.location.href = url;
           return { url };
         }
       },
       {
         name: "order_via_whatsapp",
-        description: "Initiate an order for Mellow Fellow products via WhatsApp. Minimum order $100. Accepts crypto (BTC/USDT) and bank transfer.",
+        description: "Initiate an order for Mellow Fellow products via WhatsApp. Minimum order $100. Accepts Bitcoin, USDT, Apple Pay, Chime and CashApp.",
         inputSchema: {
           type: "object",
           properties: {
@@ -51,9 +52,9 @@
         description: "Get wholesale pricing information. Tiers: 5+ units = 30% off, 10+ = 40% off, 25+ = 50% off retail.",
         inputSchema: { type: "object", properties: {} },
         execute: async () => {
-          window.location.href = "https://mellowfellowcarts.com/wholesale";
+          window.location.href = "https://mellowfellowcarts.com/wholesale/";
           return {
-            url: "https://mellowfellowcarts.com/wholesale",
+            url: "https://mellowfellowcarts.com/wholesale/",
             tiers: [
               { min_units: 5, discount: "30%" },
               { min_units: 10, discount: "40%" },
@@ -78,8 +79,9 @@
           required: ["query"]
         },
         execute: async ({ query }) => {
-          window.location.href = `https://mellowfellowcarts.com/shop?s=${encodeURIComponent(query)}`;
-          return { query, url: `https://mellowfellowcarts.com/shop?s=${encodeURIComponent(query)}` };
+          const url = `https://mellowfellowcarts.com/search/?q=${encodeURIComponent(query)}`;
+          window.location.href = url;
+          return { query, url };
         }
       },
       {
@@ -95,8 +97,8 @@
           }
         },
         execute: async ({ topic }) => {
-          window.location.href = "https://mellowfellowcarts.com/blog";
-          return { url: "https://mellowfellowcarts.com/blog", topic };
+          window.location.href = "https://mellowfellowcarts.com/blog/";
+          return { url: "https://mellowfellowcarts.com/blog/", topic };
         }
       }
     ]

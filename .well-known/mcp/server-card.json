@@ -19,27 +19,27 @@
       {
         "name": "product-catalog",
         "description": "Full catalog of Mellow Fellow hemp-derived products including disposable vapes, vape cartridges, edibles, flower, concentrates and drinks",
-        "uri": "https://mellowfellowcarts.com/shop"
+        "uri": "https://mellowfellowcarts.com/shop/"
       },
       {
         "name": "wholesale-info",
         "description": "Wholesale pricing tiers and ordering information for retailers",
-        "uri": "https://mellowfellowcarts.com/wholesale"
+        "uri": "https://mellowfellowcarts.com/wholesale/"
       },
       {
         "name": "blog",
         "description": "Educational content about THCa, THCp, live resin, delta-8, hemp products",
-        "uri": "https://mellowfellowcarts.com/blog"
+        "uri": "https://mellowfellowcarts.com/blog/"
       },
       {
         "name": "faq",
         "description": "Frequently asked questions about Mellow Fellow products, ordering and shipping",
-        "uri": "https://mellowfellowcarts.com/faq"
+        "uri": "https://mellowfellowcarts.com/faq/"
       }
     ],
     "commerce": {
       "ordering": "WhatsApp or email",
-      "payment": ["crypto-BTC", "crypto-USDT", "bank-transfer"],
+      "payment": ["crypto-BTC", "crypto-USDT", "apple-pay", "chime", "cashapp"],
       "currency": "USD",
       "minimumOrder": 100,
       "freeShipping": 200,

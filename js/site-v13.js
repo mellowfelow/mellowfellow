@@ -147,8 +147,8 @@
       '<div class="cd-footer" id="cdFooter" hidden>' +
         '<p class="cd-note" id="cdNote"></p>' +
         '<div class="cd-subtotal-row"><span>Subtotal</span><strong id="cdSubtotal">$0.00</strong></div>' +
-        '<a class="btn-primary cd-checkout" href="/checkout" id="cdCheckoutBtn">Checkout &rarr;</a>' +
-        '<a class="btn-outline cd-viewcart" href="/cart">View Full Cart</a>' +
+        '<a class="btn-primary cd-checkout" href="/checkout/" id="cdCheckoutBtn">Checkout &rarr;</a>' +
+        '<a class="btn-outline cd-viewcart" href="/cart/">View Full Cart</a>' +
       '</div>';
     document.body.appendChild(ov);
     document.body.appendChild(dr);
@@ -218,7 +218,7 @@
     if (countEl) countEl.textContent = cartCount();
     if (!c.length) {
       itemsEl.innerHTML = '<div class="cd-empty"><p class="cd-empty-icon">🛒</p>' +
-        '<p>Your cart is empty.</p><a class="btn-outline" href="/shop">Browse Products</a></div>';
+        '<p>Your cart is empty.</p><a class="btn-outline" href="/shop/">Browse Products</a></div>';
       if (footer) footer.hidden = true;
       return;
     }
@@ -309,7 +309,7 @@
 
     if (!c.length) {
       itemsEl.innerHTML = '<div class="cart-empty"><p class="cart-empty-icon">\uD83D\uDED2</p>' +
-        '<p>Your cart is empty.</p><a class="btn-primary" href="/shop">Browse Products</a></div>';
+        '<p>Your cart is empty.</p><a class="btn-primary" href="/shop/">Browse Products</a></div>';
       if (subEl) subEl.textContent = '$0.00';
       if (shipEl) shipEl.textContent = '$0.00';
       if (totEl) totEl.textContent = '$0.00';
@@ -412,7 +412,7 @@
         '</div>';
       });
       itemsEl.innerHTML = cart.length ? ih
-        : '<p class="co-empty">Your cart is empty. <a href="/shop">Browse products</a>.</p>';
+        : '<p class="co-empty">Your cart is empty. <a href="/shop/">Browse products</a>.</p>';
 
       var setT = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
       setT('coSubtotal', '$' + t.sub.toFixed(2));
@@ -626,7 +626,7 @@
         if (data && data.success) {
           /* clear cart, go to thank-you page */
           try { localStorage.removeItem('mf_cart'); } catch (e) {}
-          window.location.href = '/order-confirmed';
+          window.location.href = '/order-confirmed/';
         } else {
           if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order →'; }
           fail('Sorry, we could not place your order automatically. Please message us on ' +
@@ -645,7 +645,7 @@
            Web3Forms) is the reliable backup confirmation for ops either way. */
         if (!w3TimedOut && err && err.name !== 'AbortError') {
           try { localStorage.removeItem('mf_cart'); } catch (e) {}
-          window.location.href = '/order-confirmed';
+          window.location.href = '/order-confirmed/';
           return;
         }
         if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order →'; }
@@ -683,53 +683,186 @@
   /* ====== FORMS (web3forms) ====== */
   function bindForms() {
     var W3 = '1f43d851-ec13-4aca-8d41-1e4f8fd9ed9b';
-    function send(payload, btn, label) {
-      if (btn) { btn.disabled = true; btn.textContent = 'Sending\u2026'; }
-      /* FormData avoids the CORS preflight that JSON+Content-Type triggers \u2014
+    function send(payload, btn, label, thankYou) {
+      if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+      /* FormData avoids the CORS preflight that JSON+Content-Type triggers —
          see the matching fix + explanation on the checkout submit handler. */
       var fd = new FormData();
       for (var k in payload) { if (payload.hasOwnProperty(k)) fd.append(k, payload[k]); }
       fd.append('botcheck', '');
+      function ok() { window.location.href = thankYou; }
+      function fail() {
+        if (btn) { btn.disabled = false; btn.textContent = label; }
+        toast('Could not send automatically. Please email info' + '@' + 'mellowfellowcarts.com or message us on WhatsApp.');
+      }
+      if (!W3 || W3.indexOf('YOUR-') === 0) { ok(); return; }
       fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Accept': 'application/json' },
         body: fd
       }).then(function (r) { return r.json(); }).then(function (d) {
-        if (btn) { btn.disabled = false; btn.textContent = label; }
-        toast(d.success ? 'Message sent! We will reply within 1-2 hours.'
-                        : 'Send failed. Email info@mellowfellowcarts.com');
+        if (d && d.success) ok(); else fail();
       }).catch(function () {
-        /* Web3Forms intermittently omits CORS headers on its actual response
-           even when the submission succeeded server-side — see the matching
-           note on the checkout handler. Assume success here too rather than
-           telling a real sender their message failed. */
-        if (btn) { btn.disabled = false; btn.textContent = label; }
-        toast('Message sent! We will reply within 1-2 hours.');
+        /* Web3Forms intermittently omits CORS headers on its actual response even
+           when the submission succeeded server-side — see the checkout note.
+           Assume success rather than telling a real sender their message failed. */
+        ok();
       });
     }
-    var cb = document.getElementById('contactSubmit');
-    if (cb) cb.addEventListener('click', function () {
+    function bindForm(cfg) {
+      var btn = document.getElementById(cfg.btn);
+      if (!btn) return;
+      var form = btn.closest('form');
       var v = function (id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; };
-      var name = v('contactName'), email = v('contactEmail'), msg = v('contactMsg');
-      if (!name || !email || !msg) { toast('Please fill in all required fields.'); return; }
-      send({
-        access_key: W3, subject: 'Mellow Fellow Contact: ' + (v('contactSubject') || 'Inquiry'),
-        from_name: 'Mellow Fellow Website', email: 'info@mellowfellowcarts.com', reply_to: email,
-        message: 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + v('contactPhone') +
-          '\nSubject: ' + v('contactSubject') + '\n\n' + msg
-      }, cb, 'Send Message \u2192');
+      function submit() {
+        for (var i = 0; i < cfg.required.length; i++) {
+          if (!v(cfg.required[i])) {
+            toast(cfg.requiredMsg);
+            var el = document.getElementById(cfg.required[i]);
+            if (el) el.focus();
+            return;
+          }
+        }
+        send(cfg.payload(v), btn, cfg.label, cfg.thankYou);
+      }
+      btn.addEventListener('click', function (e) { e.preventDefault(); submit(); });
+      if (form) form.addEventListener('submit', function (e) { e.preventDefault(); submit(); });
+    }
+    bindForm({
+      btn: 'contactSubmit', label: 'Send Message →',
+      required: ['contactName', 'contactEmail', 'contactMsg'],
+      requiredMsg: 'Please fill in your name, email and message.',
+      thankYou: '/thank-you-contact/',
+      payload: function (v) {
+        return {
+          access_key: W3, subject: 'Mellow Fellow Contact: ' + (v('contactSubject') || 'Inquiry'),
+          from_name: 'Mellow Fellow Website', email: 'info@mellowfellowcarts.com', reply_to: v('contactEmail'),
+          message: 'Name: ' + v('contactName') + '\nEmail: ' + v('contactEmail') +
+            '\nPhone: ' + v('contactPhone') + '\nSubject: ' + v('contactSubject') +
+            '\n\n' + v('contactMsg')
+        };
+      }
     });
-    var wb = document.getElementById('wholesaleSubmit');
-    if (wb) wb.addEventListener('click', function () {
-      var v = function (id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; };
-      var biz = v('wBiz'), email = v('wEmail');
-      if (!biz || !email) { toast('Please fill in business name and email.'); return; }
-      send({
-        access_key: W3, subject: 'NEW Wholesale Application \u2014 ' + biz,
-        from_name: 'Mellow Fellow Wholesale', email: 'info@mellowfellowcarts.com', reply_to: email,
-        message: 'Business: ' + biz + '\nContact: ' + v('wContact') + '\nEmail: ' + email +
-          '\nPhone: ' + v('wPhone') + '\n\nNotes:\n' + v('wNotes')
-      }, wb, 'Submit Application \u2192');
+    bindForm({
+      btn: 'wholesaleSubmit', label: 'Submit Application →',
+      required: ['wBiz', 'wEmail'],
+      requiredMsg: 'Please fill in your business name and email.',
+      thankYou: '/thank-you-wholesale/',
+      payload: function (v) {
+        return {
+          access_key: W3, subject: 'NEW Wholesale Application — ' + v('wBiz'),
+          from_name: 'Mellow Fellow Wholesale', email: 'info@mellowfellowcarts.com', reply_to: v('wEmail'),
+          message: 'Business: ' + v('wBiz') + '\nContact: ' + v('wContact') +
+            '\nEmail: ' + v('wEmail') + '\nPhone: ' + v('wPhone') +
+            '\n\nNotes:\n' + v('wNotes')
+        };
+      }
+    });
+  }
+
+  /* ====== SHOP FILTER + SORT (client-side, progressive) ====== */
+  function shopFilters() {
+    var toolbar = document.getElementById('shopToolbar') || document.querySelector('.shop-toolbar');
+    var grid = document.querySelector('main [class*="prod-grid"]');
+    if (!toolbar || !grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll(':scope > .product-card'));
+    if (cards.length < 2) return;
+
+    var STR = ['sativa', 'indica', 'hybrid'];
+    var strainCounts = { sativa: 0, indica: 0, hybrid: 0 };
+    cards.forEach(function (card, i) {
+      card.setAttribute('data-ord', i);
+      var priceEl = card.querySelector('.product-price');
+      var price = priceEl ? parseFloat(priceEl.getAttribute('content') || priceEl.textContent.replace(/[^0-9.]/g, '')) : 0;
+      card.setAttribute('data-price', isNaN(price) ? 0 : price);
+      var nameEl = card.querySelector('.product-name');
+      card.setAttribute('data-name', nameEl ? nameEl.textContent.trim().toLowerCase() : '');
+      var sEl = card.querySelector('.prod-strain');
+      var strain = '';
+      if (sEl) {
+        for (var k = 0; k < STR.length; k++) {
+          if (sEl.className.indexOf('prod-type-' + STR[k]) !== -1) { strain = STR[k]; break; }
+        }
+      }
+      card.setAttribute('data-strain', strain);
+      if (strain) strainCounts[strain]++;
+    });
+
+    var haveStrain = (strainCounts.sativa + strainCounts.indica + strainCounts.hybrid) >= 3;
+    var countEl = toolbar.querySelector('.results-count');
+    var totalTxt = countEl ? countEl.textContent : (cards.length + ' products');
+    var totalN = cards.length;
+
+    var controls = document.createElement('div');
+    controls.className = 'shop-controls';
+    var strainHtml = '';
+    if (haveStrain) {
+      strainHtml = '<div class="shop-strain-filter" role="group" aria-label="Filter by strain type">' +
+        '<button type="button" class="strain-pill is-on" data-strain="">All types</button>';
+      STR.forEach(function (s) {
+        if (strainCounts[s] > 0) {
+          strainHtml += '<button type="button" class="strain-pill" data-strain="' + s + '">' +
+            s.charAt(0).toUpperCase() + s.slice(1) + ' <span>(' + strainCounts[s] + ')</span></button>';
+        }
+      });
+      strainHtml += '</div>';
+    }
+    controls.innerHTML = strainHtml +
+      '<label class="shop-sort"><span>Sort</span>' +
+        '<select id="shopSortSel">' +
+          '<option value="featured">Featured</option>' +
+          '<option value="price-asc">Price: low to high</option>' +
+          '<option value="price-desc">Price: high to low</option>' +
+          '<option value="name">Name: A to Z</option>' +
+        '</select>' +
+      '</label>';
+    toolbar.appendChild(controls);
+
+    var state = { strain: '', sort: 'featured' };
+
+    function apply() {
+      var visible = 0;
+      cards.forEach(function (card) {
+        var ok = !state.strain || card.getAttribute('data-strain') === state.strain;
+        card.hidden = !ok;
+        if (ok) visible++;
+      });
+      var ordered = cards.slice().sort(function (a, b) {
+        if (state.sort === 'price-asc') return a.getAttribute('data-price') - b.getAttribute('data-price');
+        if (state.sort === 'price-desc') return b.getAttribute('data-price') - a.getAttribute('data-price');
+        if (state.sort === 'name') return a.getAttribute('data-name') < b.getAttribute('data-name') ? -1 : 1;
+        return a.getAttribute('data-ord') - b.getAttribute('data-ord');
+      });
+      ordered.forEach(function (card) { grid.appendChild(card); });
+      if (countEl) {
+        countEl.textContent = (visible === totalN)
+          ? totalTxt
+          : 'Showing ' + visible + ' of ' + totalN + ' products';
+      }
+      if (!visible) {
+        if (!document.getElementById('shopNoMatch')) {
+          var p = document.createElement('p');
+          p.id = 'shopNoMatch';
+          p.className = 'shop-no-match';
+          p.textContent = 'No products match this filter.';
+          grid.parentNode.insertBefore(p, grid.nextSibling);
+        }
+        document.getElementById('shopNoMatch').hidden = false;
+      } else {
+        var nm = document.getElementById('shopNoMatch');
+        if (nm) nm.hidden = true;
+      }
+    }
+
+    var sel = controls.querySelector('#shopSortSel');
+    sel.addEventListener('change', function () { state.sort = sel.value; apply(); });
+    var pills = controls.querySelectorAll('.strain-pill');
+    Array.prototype.forEach.call(pills, function (pill) {
+      pill.addEventListener('click', function () {
+        state.strain = pill.getAttribute('data-strain');
+        Array.prototype.forEach.call(pills, function (p) { p.classList.toggle('is-on', p === pill); });
+        apply();
+      });
     });
   }
 
@@ -746,7 +879,56 @@
        default (products visible first) — no auto-open. */
   }
 
-  /* ====== SEARCH OVERLAY ====== */
+  /* ====== SEARCH (shared query engine + overlay + /search/ page) ====== */
+  function mfEsc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  /* returns { q, terms, products:[...], posts:[...] } for a raw query string */
+  function mfQuery(raw) {
+    var q = String(raw || '').trim().toLowerCase();
+    var terms = q.length ? q.split(/\s+/) : [];
+    var prods = window.MF_SEARCH || [];
+    var posts = window.MF_BLOG || [];
+    function hit(hay) {
+      for (var i = 0; i < terms.length; i++) {
+        if (hay.indexOf(terms[i]) === -1) return false;
+      }
+      return true;
+    }
+    var pMatches = terms.length ? prods.filter(function (p) { return hit(p.h); }) : [];
+    var bMatches = terms.length ? posts.filter(function (b) { return hit(b.h); }) : [];
+    /* rank: whole-query appears at start of the name first */
+    pMatches.sort(function (a, b) {
+      return (a.n.toLowerCase().indexOf(q) === 0 ? 0 : 1) -
+             (b.n.toLowerCase().indexOf(q) === 0 ? 0 : 1);
+    });
+    return { q: q, terms: terms, products: pMatches, posts: bMatches };
+  }
+  function mfProductRow(p) {
+    return '<a class="search-result" href="' + p.u + '/">' +
+      '<img src="' + mfEsc(p.img) + '" alt="" loading="lazy" width="56" height="56">' +
+      '<span class="search-result-info">' +
+        '<span class="search-result-name">' + mfEsc(p.s) + '</span>' +
+        '<span class="search-result-meta">' + mfEsc(p.c) +
+          (p.sub ? ' &middot; ' + mfEsc(p.sub) : '') +
+          (p.st ? ' &middot; ' + mfEsc(p.st) : '') + '</span>' +
+      '</span>' +
+      '<span class="search-result-price">$' + p.p.toFixed(2) + '</span>' +
+    '</a>';
+  }
+  function mfPostRow(b) {
+    return '<a class="search-result search-result-post" href="' + b.u + '">' +
+      (b.img ? '<img src="' + mfEsc(b.img) + '" alt="" loading="lazy" width="56" height="56">' : '<span class="search-result-doticon" aria-hidden="true">&#9776;</span>') +
+      '<span class="search-result-info">' +
+        '<span class="search-result-name">' + mfEsc(b.t) + '</span>' +
+        '<span class="search-result-meta">Guide</span>' +
+      '</span>' +
+    '</a>';
+  }
+  function searchHref(q) { return '/search/?q=' + encodeURIComponent(q); }
+
   function search() {
     var overlay = document.getElementById('searchOverlay');
     var input = document.getElementById('searchInput');
@@ -754,9 +936,8 @@
     var openBtn = document.getElementById('searchToggle');
     var closeBtn = document.getElementById('searchClose');
     var drawerBtn = document.getElementById('mDrawerSearch');
+    var nfBtn = document.getElementById('nfSearchBtn');
     if (!overlay || !input || !results) return;
-
-    var idx = window.MF_SEARCH || [];
 
     function openSearch() {
       overlay.hidden = false;
@@ -772,62 +953,43 @@
       document.body.style.overflow = '';
       setTimeout(function () { overlay.hidden = true; }, 240);
     }
-    function esc(s) {
-      return String(s).replace(/[&<>"]/g, function (c) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
-      });
-    }
-    function render(q) {
-      q = q.trim().toLowerCase();
-      if (q.length < 2) {
+    function render(raw) {
+      var r = mfQuery(raw);
+      if (r.q.length < 2) {
         results.innerHTML = '<p class="search-hint">Start typing to search ' +
-          idx.length + ' products by name, category or strain.</p>';
+          (window.MF_SEARCH || []).length + ' products and ' +
+          (window.MF_BLOG || []).length + ' guides by name, category, strain or topic.</p>';
         return;
       }
-      var terms = q.split(/\s+/);
-      var matches = idx.filter(function (p) {
-        for (var i = 0; i < terms.length; i++) {
-          if (p.h.indexOf(terms[i]) === -1) return false;
-        }
-        return true;
-      });
-      /* rank: name-start matches first */
-      matches.sort(function (a, b) {
-        var an = a.n.toLowerCase().indexOf(q) === 0 ? 0 : 1;
-        var bn = b.n.toLowerCase().indexOf(q) === 0 ? 0 : 1;
-        return an - bn;
-      });
-      if (!matches.length) {
-        results.innerHTML = '<p class="search-empty">No products match &ldquo;' +
-          esc(q) + '&rdquo;.<br>Try a category like &ldquo;edibles&rdquo; or &ldquo;flower&rdquo;.</p>';
+      if (!r.products.length && !r.posts.length) {
+        results.innerHTML = '<p class="search-empty">Nothing matches &ldquo;' + mfEsc(r.q) +
+          '&rdquo;.<br>Try a category like &ldquo;edibles&rdquo; or a strain like &ldquo;blue dream&rdquo;.</p>';
         return;
       }
-      var shown = matches.slice(0, 8);
-      var html = '<p class="search-cat-head">' + matches.length +
-        ' product' + (matches.length !== 1 ? 's' : '') + ' found</p>';
-      shown.forEach(function (p) {
-        html += '<a class="search-result" href="' + p.u + '">' +
-          '<img src="' + esc(p.img) + '" alt="" loading="lazy">' +
-          '<span class="search-result-info">' +
-            '<span class="search-result-name">' + esc(p.s) + '</span>' +
-            '<span class="search-result-meta">' + esc(p.c) +
-              (p.sub ? ' &middot; ' + esc(p.sub) : '') +
-              (p.st ? ' &middot; ' + esc(p.st) : '') + '</span>' +
-          '</span>' +
-          '<span class="search-result-price">$' + p.p.toFixed(2) + '</span>' +
-        '</a>';
-      });
-      if (matches.length > shown.length) {
-        html += '<a class="search-link-row" href="/shop">' +
-          'View all ' + matches.length + ' results in the shop &rarr;</a>';
+      var html = '';
+      if (r.products.length) {
+        html += '<p class="search-cat-head">' + r.products.length + ' product' +
+          (r.products.length !== 1 ? 's' : '') + '</p>';
+        r.products.slice(0, 6).forEach(function (p) { html += mfProductRow(p); });
       }
+      if (r.posts.length) {
+        html += '<p class="search-cat-head">' + r.posts.length + ' guide' +
+          (r.posts.length !== 1 ? 's' : '') + '</p>';
+        r.posts.slice(0, 3).forEach(function (b) { html += mfPostRow(b); });
+      }
+      html += '<a class="search-link-row" href="' + searchHref(r.q) + '">' +
+        'See all results for &ldquo;' + mfEsc(r.q) + '&rdquo; &rarr;</a>';
       results.innerHTML = html;
+    }
+    function goToPage() {
+      var v = input.value.trim();
+      if (v.length >= 2) window.location.href = searchHref(v);
     }
 
     if (openBtn) openBtn.addEventListener('click', openSearch);
+    if (nfBtn) nfBtn.addEventListener('click', openSearch);
     if (closeBtn) closeBtn.addEventListener('click', closeSearch);
     if (drawerBtn) drawerBtn.addEventListener('click', function () {
-      /* close the mobile drawer first if it's open */
       var dr = document.getElementById('mobileDrawer');
       var ov = document.getElementById('mDrawerOverlay');
       if (dr) dr.classList.remove('open');
@@ -851,10 +1013,64 @@
       t = setTimeout(function () { render(v); }, 120);
     });
     input.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        var first = results.querySelector('.search-result');
-        if (first) window.location.href = first.getAttribute('href');
+      if (e.key === 'Enter') { e.preventDefault(); goToPage(); }
+    });
+  }
+
+  /* ====== /search/ PAGE ====== */
+  function renderSearchPage() {
+    var wrap = document.getElementById('searchPageResults');
+    var input = document.getElementById('searchPageInput');
+    var form = document.getElementById('searchPageForm');
+    if (!wrap || !input || !form) return;
+
+    function paint(raw) {
+      var r = mfQuery(raw);
+      if (r.q.length < 2) {
+        wrap.innerHTML = '<p class="search-hint">Type a product name, strain, blend, cannabinoid or topic and press Search.</p>';
+        document.title = 'Search — Mellow Fellow';
+        return;
       }
+      document.title = 'Search: ' + r.q + ' — Mellow Fellow';
+      var total = r.products.length + r.posts.length;
+      if (!total) {
+        wrap.innerHTML = '<p class="search-empty">Nothing matches &ldquo;' + mfEsc(r.q) +
+          '&rdquo;.<br>Check the spelling, or browse <a href="/shop/">all products</a> or the <a href="/blog/">blog</a>.</p>';
+        return;
+      }
+      var html = '<p class="search-summary">' + total + ' result' + (total !== 1 ? 's' : '') +
+        ' for &ldquo;' + mfEsc(r.q) + '&rdquo;</p>';
+      if (r.products.length) {
+        html += '<h2 class="search-group-head">Products <span>(' + r.products.length + ')</span></h2>' +
+          '<div class="search-page-list">';
+        r.products.forEach(function (p) { html += mfProductRow(p); });
+        html += '</div>';
+      }
+      if (r.posts.length) {
+        html += '<h2 class="search-group-head">Guides &amp; articles <span>(' + r.posts.length + ')</span></h2>' +
+          '<div class="search-page-list">';
+        r.posts.forEach(function (b) { html += mfPostRow(b); });
+        html += '</div>';
+      }
+      wrap.innerHTML = html;
+    }
+
+    function currentQ() {
+      var m = /[?&]q=([^&]*)/.exec(window.location.search);
+      return m ? decodeURIComponent(m[1].replace(/\+/g, ' ')) : '';
+    }
+
+    var q0 = currentQ();
+    input.value = q0;
+    paint(q0);
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var v = input.value.trim();
+      var url = v ? searchHref(v) : '/search/';
+      try { window.history.replaceState(null, '', url); } catch (err) {}
+      paint(v);
+      input.blur();
     });
   }
 
@@ -863,7 +1079,9 @@
     ageGate();
     drawer();
     shopSidebar();
+    shopFilters();
     search();
+    renderSearchPage();
     updateBadge();
     buildCartDrawer();
     bindCartTrigger();

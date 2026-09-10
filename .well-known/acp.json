@@ -11,7 +11,7 @@
   "capabilities": {
     "services": ["product-catalog", "wholesale", "blog", "faq"],
     "ordering": "human-assisted-whatsapp",
-    "payment_methods": ["crypto-BTC", "crypto-USDT", "bank-transfer"],
+    "payment_methods": ["crypto-BTC", "crypto-USDT", "apple-pay", "chime", "cashapp"],
     "currency": "USD",
     "minimum_order_usd": 100,
     "free_shipping_threshold_usd": 200
